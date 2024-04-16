@@ -8,11 +8,17 @@ For this project, we sat at the radar detector and recorded the date, time, spee
 - Collected at least 50 cars per person(totaling more than 200)
 ## Data Organization
 1. We started by merging our data into one Excel file.
+  
 2. Then uploaded the Excel file into R.
+
 `df <- read_excel('MergedCarData.xlsx', .name_repair = 'universal')`
+
 3. We then modified the time column so it showed as hour/minute/seconds.
+
 `df$Time <- format(df$Time, "%H:%M:%S")`
+
 4. We then began creating the ui for the shiny app. Writing code for the application title and the output for results displayed in the main panel.
+
 `ui <- fluidPage(
   titlePanel("Speed Analysis"),
   mainPanel(
@@ -24,6 +30,7 @@ For this project, we sat at the radar detector and recorded the date, time, spee
     plotOutput("histogram")
   )
 )`
+
 5. Then We created the server for the shiny app.
 
 ## Shiny Results with Chart
