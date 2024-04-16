@@ -10,3 +10,8 @@ For this project, we sat at the radar detector and recorded the date, time, spee
 1. We started by merging our data into one Excel file.
 2. 
 ## Shiny Results with Chart
+
+
+- Insert charts here :)
+- Remember we need to add a link somewhere
+- Possibly also a link to our essay
