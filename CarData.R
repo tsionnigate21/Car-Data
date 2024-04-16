@@ -3,9 +3,36 @@ library(shiny)
 library(DT)
 library(readxl)
 
-setwd('C:/Users/hanna/Documents/DATA 332/CarData')
-df <- read_excel('MergedCarData.xlsx', .name_repair = 'universal')
+#setwd('C:/Users/stick/Documents/GitHub/Car-Data')
+dir.create('data')
 
+df <- data.frame()
+
+capitalize_words <- function(word_list) {
+  sapply(word_list, function(word) {
+    paste(toupper(substring(word, 1, 1)), substring(word, 2), sep = "")
+  })
+}
+download <- function(name) {
+  url <- "https://github.com/LoJoSho/Car-Data/raw/main/"
+  download.file(paste0(url, name), paste0("data/", name), quiet = TRUE)
+}
+
+# ABBA Data
+download("MergedCarData.csv")
+abba_data <- read.csv('data/MergedCarData.csv')
+df <- rbind(df, abba_data)
+
+# Assign Values
+df$Date <- as.Date(df$Date)
+df$Time <- as.Date(df$Date)
+df$Speed <- as.numeric(df$Speed)
+df$Orange.Light <- as.logical(df$Orange.Light)
+df$Temperature <- as.numeric(df$Temperature)
+
+# Clean all the data
+df$State <- replace(df$State, df$State == 'IO', 'IA') # Fix IA being IO
+df$Weather <- capitalize_words(df$Weather) # Make first letter capitalize
 df$Time <- format(df$Time, "%H:%M:%S")
 
 ui <- fluidPage(
@@ -26,12 +53,7 @@ ui <- fluidPage(
 
 # Define server logic
 server <- function(input, output) {
-  
-  # Function to calculate min, max, median, and mean from Excel sheet
-  calculate_stats <- function(file_path) {
-    # Read data from Excel file
-    data <- read_excel(file_path)
-    # Extract 'Speed' column
+  calculate_stats <- function(data) {
     speed <- data$Speed
     min_val <- min(speed)
     max_val <- max(speed)
@@ -39,9 +61,6 @@ server <- function(input, output) {
     mean_val <- round(mean(speed), digits = 0)  # Round mean to whole number
     return(list(min = min_val, max = max_val, median = median_val, mean = mean_val, speeds = speed))
   }
-  
-  # Define the file path of the Excel file
-  df <- "MergedCarData.xlsx"  # Update with your file path
   
   # Calculate statistics and render outputs
   output$min <- renderPrint({ paste("Minimum Speed:", calculate_stats(df)$min) })
@@ -55,4 +74,4 @@ server <- function(input, output) {
 }
 
 # Run the application
-shinyApp(ui = ui, server = server)
+shinyApp(ui, server)
