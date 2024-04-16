@@ -14,7 +14,7 @@ capitalize_words <- function(word_list) {
   })
 }
 download <- function(name) {
-  url <- "https://github.com/LoJoSho/Car-Data/raw/main/"
+  url <- "https://github.com/hannahmaurer/Car-Data/raw/main/"
   download.file(paste0(url, name), paste0("data/", name), quiet = TRUE)
 }
 
