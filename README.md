@@ -31,10 +31,40 @@ For this project, we sat at the radar detector and recorded the date, time, spee
   )
 )`
 
-5. Then We created the server for the shiny app.
+5. Then We created the server for the shiny app. We did this by creating a function to calculate min, max, median, and mean from Excel sheet. Then making a path to the excel file. Then finally puting the calculations statistics and render outputs. 
+
+`server <- function(input, output) {
+  calculate_stats <- function(file_path) {
+    # Read data from Excel file
+    data <- read_excel(file_path)
+    # Extract 'Speed' column
+    speed <- data$Speed
+    min_val <- min(speed)
+    max_val <- max(speed)
+    median_val <- median(speed)
+    mean_val <- round(mean(speed), digits = 0)  # Round mean to whole number
+    return(list(min = min_val, max = max_val, median = median_val, mean = mean_val, speeds = speed))
+  }
+  df <- "MergedCarData.xlsx"  # Update with your file path
+  output$min <- renderPrint({ paste("Minimum Speed:", calculate_stats(df)$min) })
+  output$max <- renderPrint({ paste("Maximum Speed:", calculate_stats(df)$max) })
+  output$median <- renderPrint({ paste("Median Speed:", calculate_stats(df)$median) })
+  output$mean <- renderPrint({ paste("Mean Speed:", calculate_stats(df)$mean) })
+  output$histogram <- renderPlot({
+    speeds <- calculate_stats(df)$speeds
+    hist(speeds, main = "Distribution of Speeds", xlab = "Speed", ylab = "Frequency", col = "skyblue")
+  })
+}`
+
 
 ## Shiny Results with Chart
+<img width="431" alt="image" src="https://github.com/hannahmaurer/Car-Data/assets/159860800/3f82d14a-b2eb-47ba-9ecf-d47e65f876b1">
 
-- Insert charts here :)
+1. In the first image shows the calculations of minimum, maximum, median, and mean of the cars speed.
+
+<img width="452" alt="image" src="https://github.com/hannahmaurer/Car-Data/assets/159860800/0ddfa977-676a-4858-abcb-543d5b2f6445">
+
+2. In the second image shows a histogram that shows the frequency of speed for the cars. 
+
 - Remember we need to add a link somewhere
 - Possibly also a link to our essay
