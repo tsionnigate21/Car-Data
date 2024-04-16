@@ -31,13 +31,11 @@ For this project, we sat at the radar detector and recorded the date, time, spee
   )
 )`
 
-5. Then We created the server for the shiny app. We did this by creating a function to calculate min, max, median, and mean from Excel sheet. Then making a path to the excel file. Then finally puting the calculations statistics and render outputs. 
+5. Then We created the server for the shiny app. We did this by creating a function to calculate min, max, median, and mean from an Excel sheet. Then make a path to the Excel file so it can be extracted from the speed column. Then finally put the calculations statistics and render outputs so it can all be shown in a histogram. 
 
 `server <- function(input, output) {
   calculate_stats <- function(file_path) {
-    # Read data from Excel file
     data <- read_excel(file_path)
-    # Extract 'Speed' column
     speed <- data$Speed
     min_val <- min(speed)
     max_val <- max(speed)
@@ -45,7 +43,7 @@ For this project, we sat at the radar detector and recorded the date, time, spee
     mean_val <- round(mean(speed), digits = 0)  # Round mean to whole number
     return(list(min = min_val, max = max_val, median = median_val, mean = mean_val, speeds = speed))
   }
-  df <- "MergedCarData.xlsx"  # Update with your file path
+  df <- "MergedCarData.xlsx"
   output$min <- renderPrint({ paste("Minimum Speed:", calculate_stats(df)$min) })
   output$max <- renderPrint({ paste("Maximum Speed:", calculate_stats(df)$max) })
   output$median <- renderPrint({ paste("Median Speed:", calculate_stats(df)$median) })
@@ -56,6 +54,9 @@ For this project, we sat at the radar detector and recorded the date, time, spee
   })
 }`
 
+6. Finally we end our code with running the application.
+
+`shinyApp(ui = ui, server = server)`
 
 ## Shiny Results with Chart
 <img width="431" alt="image" src="https://github.com/hannahmaurer/Car-Data/assets/159860800/3f82d14a-b2eb-47ba-9ecf-d47e65f876b1">
@@ -64,7 +65,7 @@ For this project, we sat at the radar detector and recorded the date, time, spee
 
 <img width="452" alt="image" src="https://github.com/hannahmaurer/Car-Data/assets/159860800/0ddfa977-676a-4858-abcb-543d5b2f6445">
 
-2. In the second image shows a histogram that shows the frequency of speed for the cars. 
+2. In the second image shows a histogram of the frequency of speed for the cars. 
 
 - Remember we need to add a link somewhere
 - Possibly also a link to our essay
