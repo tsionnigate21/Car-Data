@@ -67,5 +67,3 @@ For this project, we sat at the radar detector and recorded the date, time, spee
 
 2. In the second image shows a histogram of the frequency of speed for the cars. 
 
-- Remember we need to add a link somewhere
-- Possibly also a link to our essay
