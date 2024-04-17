@@ -7,19 +7,49 @@ For this project, we sat at the radar detector and recorded the date, time, spee
 - Radar detector located near 30th St and 24th Avenue in Rock Island IL
 - Collected at least 50 cars per person(totaling more than 200)
 ## Data Organization
-1. We started by merging our data into one Excel file.
+1. We started by merging our data into one Excel file. Then we exported it to a csv file before uploading it to our GitHub. 
+
+2. We then download the file to our local machine. 
+
+```
+download <- function(name) {
+  url <- "https://github.com/hannahmaurer/Car-Data/raw/main/"
+  download.file(paste0(url, name), paste0("data/", name), quiet = TRUE)
+}
+
+download("MergedCarData.csv")
+```
   
-2. Then uploaded the Excel file into R.
+2. Once we got the data, we then pull it into R. 
 
-`df <- read_excel('MergedCarData.xlsx', .name_repair = 'universal')`
+```
+df <- data.frame() # Created earlier
+abba_data <- read.csv('data/MergedCarData.csv')
+df <- rbind(df, abba_data) # Allows us to insert more data in the future
+```
 
-3. We then modified the time column so it showed as hour/minute/seconds.
+3. We then ensure the data is all the correct values.
 
-`df$Time <- format(df$Time, "%H:%M:%S")`
+```
+df$Date <- as.Date(df$Date)
+df$Time <- as.Date(df$Date)
+df$Speed <- as.numeric(df$Speed)
+df$Orange.Light <- as.logical(df$Orange.Light)
+df$Temperature <- as.numeric(df$Temperature)
+```
+
+3. We then clean the data by fixing misinputs and formatting the time. 
+
+```
+df$State <- replace(df$State, df$State == 'IO', 'IA') # Fix IA being IO
+df$Weather <- capitalize_words(df$Weather) # Make first letter capitalize
+df$Time <- format(df$Time, "%H:%M:%S")
+```
 
 4. We then began creating the ui for the shiny app. Writing code for the application title and the output for results displayed in the main panel.
 
-`ui <- fluidPage(
+```
+ui <- fluidPage(
   titlePanel("Speed Analysis"),
   mainPanel(
     h3("Results:"),
@@ -29,11 +59,13 @@ For this project, we sat at the radar detector and recorded the date, time, spee
     verbatimTextOutput("mean"),
     plotOutput("histogram")
   )
-)`
+)
+```
 
 5. Then We created the server for the shiny app. We did this by creating a function to calculate min, max, median, and mean from an Excel sheet. Then make a path to the Excel file so it can be extracted from the speed column. Then finally put the calculations statistics and render outputs so it can all be shown in a histogram. 
 
-`server <- function(input, output) {
+```
+server <- function(input, output) {
   calculate_stats <- function(file_path) {
     data <- read_excel(file_path)
     speed <- data$Speed
@@ -52,7 +84,8 @@ For this project, we sat at the radar detector and recorded the date, time, spee
     speeds <- calculate_stats(df)$speeds
     hist(speeds, main = "Distribution of Speeds", xlab = "Speed", ylab = "Frequency", col = "skyblue")
   })
-}`
+}
+```
 
 6. Finally we end our code with running the application.
 
