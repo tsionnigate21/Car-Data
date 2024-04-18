@@ -104,5 +104,22 @@ The server logic also includes rendering the data table, allowing users to view 
 
 ## Conclusion 
 - Insert charts here :)
-  
+
+   Plotting by Date and Speed
+   <div align = "center">
+   <img src = "Images/Date.png" width = "700")>
+   </div>
+   
+   Plotting by State and Speed
+   <div align = "center">
+   <img src = "Images/state.png" width = "700")>
+   </div>
+   
+   Plotting by Temprature and Speed
+   <div align = "center">
+   <img src = "Images/temp.png" width = "700")>
+   </div>
+   Images/temp.png
+
+   
 - [applink]([https://www.example.com](https://tsionnigate21.shinyapps.io/Ncar/))
